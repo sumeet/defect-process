@@ -11,6 +11,7 @@ import Data.Foldable          (traverse_)
 import qualified SDL
 import qualified SDL.Font
 
+import Debug.Trace (traceShowId)
 import Configs
 import Configs.All.Settings
 import Configs.All.Settings.Render
@@ -50,7 +51,7 @@ updateWindow window = do
 
     return $ window
         { _inputState = inputState
-        , _closed     = QuitEvent `elem` inputEvents
+        , _closed     = _closed window || QuitEvent `elem` inputEvents
         }
 
 processWindowGraphicsEvents

@@ -6,6 +6,7 @@ import Control.Monad (when)
 import Data.Either   (fromRight)
 import System.Mem    (performGC)
 import qualified Data.Text as T
+import Debug.Trace (trace)
 
 import AppEnv
 import Async.BackgroundThread
@@ -139,8 +140,8 @@ gameMain appEnvData window game = do
     (window', configs, game') <- runAppEnv appEnvData $ do
         (win, cfgs, gm) <- updateGame window game
 
-        when (_closed win || _quit gm) $
-            freeGraphicsAndExit
+        when (trace "checking closed" $ _closed win || _quit gm) $
+            (trace "calling freeGraphicsAndExit" freeGraphicsAndExit)
 
         let
             diffSecs                  = _diffSecs $ _time gm
